@@ -13,11 +13,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-//importacion de rutas
-const usuario = require('./routes/usuario.js')
+//configuracion global de rutas
+const rutas = require('./routes/index.js')
 
 
-app.use(usuario)
+app.use(rutas)
 
 
  //conexion de mongoose con la base de datos

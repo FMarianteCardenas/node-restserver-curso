@@ -5,7 +5,10 @@ const _ = require('underscore')
 
 const Usuario = require('../models/usuario')
 
-app.get('/usuarios', function (req, res) {
+//middleware
+const {verificarToken,verificarADMIN_ROLE} = require('../middlewares/autenticacion.js')
+
+app.get('/usuarios',verificarToken , (req, res) => {
     
     //los parametros opcionales vienen dentro de req.query
     let desde = Number(req.query.desde) || 0
@@ -32,7 +35,7 @@ app.get('/usuarios', function (req, res) {
         })
     })
 })
-app.post('/usuarios', function (req, res) {
+app.post('/usuarios',[verificarToken,verificarADMIN_ROLE], function (req, res) {
     let body = req.body
 
     let usuario = new Usuario({
@@ -56,7 +59,7 @@ app.post('/usuarios', function (req, res) {
         })
     })
 })
-app.put('/usuarios/:id', function (req, res) {
+app.put('/usuarios/:id', [verificarToken,verificarADMIN_ROLE],function (req, res) {
     let id = req.params.id
     
     //usando la libreria de underscore para quitar los atributos que no deben ser actualizados usando la 
@@ -81,7 +84,7 @@ app.put('/usuarios/:id', function (req, res) {
     })
     
 })
-app.delete('/usuarios/:id', function (req, res) {
+app.delete('/usuarios/:id', [verificarToken,verificarADMIN_ROLE],function (req, res) {
     
     let id = req.params.id
     let body = {
