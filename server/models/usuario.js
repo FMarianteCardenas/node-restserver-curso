@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-
+const Amistad = require('./amistad.js')
 let Schema = mongoose.Schema;
 
 let rolesValidos = {
@@ -40,6 +40,7 @@ let usuarioSchema = new Schema({
         type:Boolean,
         default:false
     },
+    amistades: [{ type: Schema.Types.ObjectId, ref: 'Amistad' }],
 });
 
 //personalizando el método toJSON del schema para ocultar el password en las respuestas

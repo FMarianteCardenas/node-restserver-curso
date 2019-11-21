@@ -1,6 +1,16 @@
-require('./config/config.js')
-const express = require('express')
+require('./config/config.js');
+const express = require('express');
+const socketIO = require('socket.io');
+const http = require('http');
+
+const path = require('path');
+
+
+
 const mongoose = require('mongoose');
+
+
+
 
 //se usa por un warning de nodejs que dice collection.ensureIndex is deprecated. Use createIndexes instead
 //mongoose.set('useCreateIndex', true);
@@ -19,6 +29,12 @@ const rutas = require('./routes/index.js')
 
 app.use(rutas)
 
+let server = http.createServer(app);
+
+// esta es la comunicacion del backend
+module.exports.io = socketIO(server);
+require('./socket/socket.js')
+
 
  //conexion de mongoose con la base de datos
 mongoose.connect(process.env.URL_DB, {
@@ -30,6 +46,6 @@ mongoose.connect(process.env.URL_DB, {
     console.log('Conectado correctamente con la base de datos');
 });
 
-app.listen(process.env.PORT,()=>{
+server.listen(process.env.PORT,()=>{
     console.log(`Escuchando en puerto ${process.env.PORT}`);
 })
